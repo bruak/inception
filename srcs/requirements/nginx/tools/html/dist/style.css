@@ -1,0 +1,151 @@
+* {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
+        color: white;
+        background: #111;
+        transition: background 0.5s ease;
+        background-size: 200% 200%;
+        animation: backgroundShift 12s ease infinite;
+      }
+
+      @keyframes backgroundShift {
+        0% {
+          background: linear-gradient(45deg, #ff979b, #fad0c4);
+        }
+        25% {
+          background: linear-gradient(45deg, #fad390, #fda085);
+        }
+        50% {
+          background: linear-gradient(45deg, #fda085, #ff9a9e);
+        }
+        75% {
+          background: linear-gradient(45deg, #fad0c4, #fad390);
+        }
+        100% {
+          background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+        }
+      }
+
+      .container {
+        text-align: center;
+        font-size: 8rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        position: relative;
+        z-index: 10;
+      }
+
+      .container .word {
+        display: inline-block;
+        opacity: 0;
+        transform: scale(0.5);
+        animation: slideIn 1s forwards ease-out;
+        margin: 10px;
+        font-size: 70%;
+      }
+
+      .word:nth-child(1) {
+        animation: slideFromLeft 1s forwards ease-out 0.2s;
+      }
+      .word:nth-child(2) {
+        animation: slideFromUp 1s forwards ease-out 0.6s;
+      }
+      .word:nth-child(3) {
+        animation: slideFromRight 1s forwards ease-out 1s;
+      }
+      .word:nth-child(4) {
+        animation: slideFromBottom 1s forwards ease-out 1.4s;
+      }
+      .word:nth-child(5) {
+        animation: slideFromLeft 1s forwards ease-out 1.8s;
+      }
+      .word:nth-child(6) {
+        animation: slideFromUp 1s forwards ease-out 2.2s;
+      }
+      .word:nth-child(7) {
+        animation: slideFromRight 1s forwards ease-out 2.6s;
+      }
+      .word:nth-child(8) {
+        animation: slideFromBottom 1s forwards ease-out 3s;
+      }
+
+      @keyframes slideFromLeft {
+        0% {
+          transform: translateX(-100vw) scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideFromUp {
+        0% {
+          transform: translateY(-100vh) scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideFromRight {
+        0% {
+          transform: translateX(100vw) scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideFromBottom {
+        0% {
+          transform: translateY(100vh) scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
+
+     
+      .rose {
+        position: absolute;
+        width: 50px;
+        opacity: 0;
+        animation: rosePop 2s ease-out forwards;
+        pointer-events: none;
+      }
+
+      @keyframes rosePop {
+        0% {
+          transform: scale(0) rotate(0deg);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1) rotate(360deg);
+          opacity: 1;
+        }
+      }
+      .word {
+        color: #ffffff;
+        font-family: "Poppins", sans-serif;
+        letter-spacing: 2px;
+      }
