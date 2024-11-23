@@ -1,19 +1,34 @@
-FROM mariadb:10.5.19
+FROM alpine:3.14
+
+# Install necessary dependencies for MariaDB
+RUN apk add --no-cache mariadb=10.5.19-r0 mariadb-client=10.5.19-r0
 
 # Optional: Set environment variables for MariaDB (you can override them in your docker-compose.yml)
-ENV MYSQL_ROOT_PASSWORD=root
-ENV MYSQL_DATABASE=test
-ENV MYSQL_USER=test
-ENV MYSQL_PASSWORD=test
+ENV MYSQL_ROOT_PASSWORD=root \
+    MYSQL_DATABASE=test \
+    MYSQL_USER=test \
+    MYSQL_PASSWORD=test
 
-# MariaDB will automatically initialize if /var/lib/mysql is empty and environment variables are set
+RUN mkdir -p /var/lib/mysql /run/mysqld && \
+chown -R mysql:mysql /var/lib/mysql /run/mysqld
+
+
+# Fix permissions for PAM authentication plugin
+RUN mkdir -p /usr/lib/mariadb/plugin/auth_pam_tool_dir && \
+    chown -R root:root /usr/lib/mariadb/plugin/auth_pam_tool_dir && \
+    chmod -R 755 /usr/lib/mariadb/plugin/auth_pam_tool_dir && \
+    chmod 4755 /usr/lib/mariadb/plugin/auth_pam_tool_dir/auth_pam_tool
+
+
+COPY ./conf/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Expose MariaDB port
 EXPOSE 3306
 
-# Mount the volume correctly in your docker-compose.yml
-VOLUME /var/lib/mysql
+USER mysql
 
-# Use the default entrypoint from the official MariaDB image
+# Use MariaDB's default entrypoint and command
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Default command (can be overridden in your docker-compose.yml)
