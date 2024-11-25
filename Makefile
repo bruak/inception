@@ -20,6 +20,7 @@ fclean:
 	@docker volume prune -f
 	@docker image rm -f $(shell docker image ls -a -q)
 	@make ps
+	
 
 re:
 	@make fclean

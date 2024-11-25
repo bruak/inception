@@ -5,16 +5,16 @@ services:
     image: nginx:42
     ports:
       - "8080:80"
-    depends_on:
-      - Wordpress
+    # depends_on:
+    #   - Wordpress
     volumes:
       - wordpress_data:/var/www/html
     env_file:
-      - fileName
-    secrets:
-      - db_password
-      - db_root_password
-      - credentials
+      - .env
+    # secrets:
+    #   - db_password
+    #   - db_root_password
+    #   - credentials
 
   mariadb:
     container_name: Test-mariadb-1
@@ -29,10 +29,10 @@ services:
       - "3306:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
-    secrets:
-      - db_password
-      - db_root_password
-      - credentials
+    # secrets:
+    #   - db_password
+    #   - db_root_password
+    #   - credentials
 
   wordpress:
     container_name: Test-wordpress-1
@@ -45,22 +45,22 @@ services:
       WORDPRESS_DB_NAME: test
     ports:
       - "8081:80"
-    depends_on:
-      - mariadb
+    # depends_on:
+    #   - mariadb
     volumes:
       - wordpress_data:/var/www/html
-    secrets:
-      - db_password
-      - db_root_password
-      - credentials
+#     secrets:
+#       - db_password
+#       - db_root_password
+#       - credentials
 
-secrets:
-  db_password:
-    file: ./secrets/db_password.txt
-  db_root_password:
-    file: ./secrets/db_root_password.txt
-  credentials:
-    file: ./secrets/credentials.txt
+# secrets:
+#   db_password:
+#     file: ./secrets/db_password.txt
+#   db_root_password:
+#     file: ./secrets/db_root_password.txt
+#   credentials:
+#     file: ./secrets/credentials.txt
 
 volumes:
   mariadb_data:
