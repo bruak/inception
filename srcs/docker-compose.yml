@@ -1,67 +1,79 @@
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  credentials:
+    file: ../secrets/credentials.txt
+
+networks:
+  inception-network:
+    name: inception-network
+    driver: bridge
+
+volumes:
+  mariadb_data:
+    driver: local
+    name: wp
+    driver_opts:
+      type: none
+      o: bind
+      device: /$HOME/data/wordpress
+
+  wordpress_data:
+    driver: local
+    name: wp
+    driver_opts:
+      type: none
+      o: bind
+      device: /$HOME/data/wordpress
+
 services:
+
   nginx:
-    container_name: Test-nginx-1
+    container_name: nginx
     build: ./requirements/nginx
-    image: nginx:42
     ports:
-      - "8080:80"
-    # depends_on:
-    #   - Wordpress
+      - "443:443"
     volumes:
       - wordpress_data:/var/www/html
     env_file:
       - .env
-    # secrets:
-    #   - db_password
-    #   - db_root_password
-    #   - credentials
+    networks:
+        - inception-network
+    secrets:
+      - db_password
+      - db_root_password
+      - credentials
 
   mariadb:
-    container_name: Test-mariadb-1
+    container_name: mariadb
     build: ./requirements/mariadb
-    image: mariadb:42
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: test
-      MYSQL_USER: test
-      MYSQL_PASSWORD: test
+    env_file:
+      - .env
     ports:
-      - "3306:3306"
+      - "3306:3306" 
     volumes:
       - mariadb_data:/var/lib/mysql
-    # secrets:
-    #   - db_password
-    #   - db_root_password
-    #   - credentials
+    networks:
+      - inception-network
+    secrets:
+      - db_password
+      - db_root_password
+      - credentials
 
   wordpress:
-    container_name: Test-wordpress-1
+    container_name: wordpress
     build: ./requirements/Wordpress
-    image: wordpress:42
-    environment:
-      WORDPRESS_DB_HOST: mariadb:3306
-      WORDPRESS_DB_USER: test
-      WORDPRESS_DB_PASSWORD: test
-      WORDPRESS_DB_NAME: test
+    env_file:
+      - .env
     ports:
-      - "8081:80"
-    # depends_on:
-    #   - mariadb
+      - "9000:9000"
     volumes:
       - wordpress_data:/var/www/html
-#     secrets:
-#       - db_password
-#       - db_root_password
-#       - credentials
-
-# secrets:
-#   db_password:
-#     file: ./secrets/db_password.txt
-#   db_root_password:
-#     file: ./secrets/db_root_password.txt
-#   credentials:
-#     file: ./secrets/credentials.txt
-
-volumes:
-  mariadb_data:
-  wordpress_data:
+    networks:
+      - inception-network
+    secrets:
+      - db_password
+      - db_root_password
+      - credentials

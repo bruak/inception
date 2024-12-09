@@ -1,4 +1,6 @@
 up:
+	@mkdir -p $(HOME)/data/wordpress
+	@mkdir -p $(HOME)/data/mariadb
 	@docker compose -f srcs/docker-compose.yml up -d
 	@make ps
 
@@ -11,6 +13,8 @@ restart:
 	@make ps
 
 build:
+	@mkdir -p $(HOME)/data/wordpress
+	@mkdir -p $(HOME)/data/mariadb
 	@docker compose -f srcs/docker-compose.yml up --build -d
 	@make ps
 
@@ -19,11 +23,13 @@ fclean:
 	@docker volume ls -q
 	@docker volume prune -f
 	@docker image rm -f $(shell docker image ls -a -q)
+	rm -rf $(HOME)/data/wordpress
+	rm -rf $(HOME)/data/mariadb
 	@make ps
 	
 
 re:
-	@make fclean
+	@make down
 	@make build
 
 ps:
