@@ -1,11 +1,15 @@
-FROM alpine:3.14
+FROM debian:bullseye
 
-RUN apk --no-cache update && apk add --no-cache nginx
+RUN apt-get update && apt-get install -y nginx openssl
 
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+EXPOSE 443
 
-EXPOSE 80
+COPY ./conf/nginx.conf/ /etc/nginx/conf.d/default.conf
+COPY ./tools/nginx_start.sh /var/www
 
-ENTRYPOINT [ "nginx" ]
-CMD ["-g", "daemon off;"]
+RUN chmod +x /var/www/nginx_start.sh
+
+ENTRYPOINT ["var/www/nginx_start.sh"]
+
+CMD ["nginx", "-g", "daemon off;"]
 

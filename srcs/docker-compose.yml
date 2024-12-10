@@ -1,10 +1,10 @@
 secrets:
   db_password:
-    file: /home/bsoykan/my_local/inception/secrets/db_password.txt
+    file: ../secrets/db_password.txt
   db_root_password:
-    file: /home/bsoykan/my_local/inception/secrets/db_root_password.txt
+    file: ../secrets/db_root_password.txt
   credentials:
-    file: /home/bsoykan/my_local/inception/secrets/credentials.txt
+    file: ../secrets/credentials.txt
 
 networks:
   inception-network:
@@ -18,7 +18,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/bsoykan/data/wordpress
+      device: $HOME/data/mariadb
 
   wordpress_data:
     driver: local
@@ -26,7 +26,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/bsoykan/data/wordpress
+      device: $HOME/data/wordpress
 
 services:
 
@@ -35,8 +35,8 @@ services:
     build: ./requirements/mariadb
     env_file:
       - .env
-    ports:
-      - "3306:3306" 
+    expose:
+      - "3306"
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -45,31 +45,28 @@ services:
       - db_password
       - db_root_password
       - credentials
-#
-#  nginx:
-#    container_name: nginx
-#    build: ./requirements/nginx
-#    ports:
-#      - "443:443"
-#    volumes:
-#      - wordpress_data:/var/www/html
-#    env_file:
-#      - .env
-#    networks:
-#        - inception-network
-#    secrets:
-#      - db_password
-#      - db_root_password
-#      - credentials
-#
-#
+    restart: on-failure
+
+  nginx:
+    container_name: nginx
+    build: ./requirements/nginx
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+        - inception-network
+    secrets:
+      - credentials
+    
+
 #  wordpress:
 #    container_name: wordpress
 #    build: ./requirements/Wordpress
 #    env_file:
 #      - .env
-#    ports:
-#      - "9000:9000"
+#    expose:
+#      - "9000"
 #    volumes:
 #      - wordpress_data:/var/www/html
 #    networks:
@@ -78,4 +75,5 @@ services:
 #      - db_password
 #      - db_root_password
 #      - credentials
+#    restart: on-failure
 #

@@ -1,7 +1,6 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get install -y mariadb-server
-RUN apt-get update && apt-get install -y gettext-base
 
 EXPOSE 3306
 

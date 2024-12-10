@@ -18,11 +18,6 @@ else
     echo "db_root_password.txt bulunamadı, root şifresi ayarlanamadı."
 fi
 
-if [ ! -d /var/lib/mysql/mysql ]; then
-    echo "MariaDB veritabanı dizini oluşturuluyor..."
-    mysql_install_db --user=mysql --ldata=/var/lib/mysql
-fi
-
 mysqld_safe --skip-grant-tables &
 sleep 5
 

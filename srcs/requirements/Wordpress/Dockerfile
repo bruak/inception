@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM debian:bullseye
 
 # Gerekli paketleri ve PHP ile ilgili bağımlılıkları kuruyoruz
 RUN apk add --no-cache php7 php7-fpm php7-mysqli php7-pdo php7-pdo_mysql \
