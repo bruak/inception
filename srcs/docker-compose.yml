@@ -45,21 +45,22 @@ services:
       - db_password
       - db_root_password
       - credentials
-    restart: on-failure
+    #restart: on-failure
 
-  nginx:
-    container_name: nginx
-    build: ./requirements/nginx
-    ports:
-      - "443:443"
-    volumes:
-      - wordpress_data:/var/www/html
-    networks:
-        - inception-network
-    secrets:
-      - credentials
-    
-
+#  nginx:
+#    container_name: nginx
+#    build: ./requirements/nginx
+#    ports:
+#      - "443:443"
+#    volumes:
+#      - wordpress_data:/var/www/html
+#    networks:
+#        - inception-network
+#    secrets:
+#      - credentials
+#    depends_on:
+#      - wordpress
+#    
 #  wordpress:
 #    container_name: wordpress
 #    build: ./requirements/Wordpress
@@ -75,5 +76,6 @@ services:
 #      - db_password
 #      - db_root_password
 #      - credentials
-#    restart: on-failure
-#
+#    depends_on:
+#      - mariadb
+    #restart: on-failure

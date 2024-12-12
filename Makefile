@@ -71,3 +71,11 @@ check:
 ps:
 	@echo "\033[1;32mDocker ps ↓.\033[0m"
 	@docker ps
+
+f:
+	@echo "\033[1;32mDocker deleting forever, everythink!!!!!!!!!!!!!!!!!!!!!!!!!1 ↓.\033[0m"
+	docker rm -f $$(docker ps -a -q)
+	docker image rm -f $$(docker image ls -a -q)
+	docker volume rm $$(docker volume ls -q)
+	docker builder prune -a --force
+	docker system prune -a --volumes --force
